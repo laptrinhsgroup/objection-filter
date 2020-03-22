@@ -38,7 +38,7 @@ module.exports.sliceRelation = sliceRelation;
  * If options.operators is specified
  * @param {Object} options.operators
  */
-module.exports.Operations = function(options) {
+module.exports.Operations = function (options) {
   const defaultOperators = {
     $like: (property, operand, builder) =>
       builder.where(property, 'ilike', `%${operand}%`),
@@ -63,11 +63,11 @@ module.exports.Operations = function(options) {
      * @param {QueryBuilder} builder
      */
     $or: (property, items, builder) => {
-      const onExit = function(operator, value, subQueryBuilder) {
+      const onExit = function (operator, value, subQueryBuilder) {
         const operationHandler = allOperators[operator];
         operationHandler(property, value, subQueryBuilder);
       };
-      const onLiteral = function(value, subQueryBuilder) {
+      const onLiteral = function (value, subQueryBuilder) {
         onExit('$equals', value, subQueryBuilder);
       };
 
@@ -90,11 +90,11 @@ module.exports.Operations = function(options) {
       });
     },
     $and: (property, items, builder) => {
-      const onExit = function(operator, value, subQueryBuilder) {
+      const onExit = function (operator, value, subQueryBuilder) {
         const operationHandler = allOperators[operator];
         operationHandler(property, value, subQueryBuilder);
       };
-      const onLiteral = function(value, subQueryBuilder) {
+      const onLiteral = function (value, subQueryBuilder) {
         onExit('$equals', value, subQueryBuilder);
       };
 
@@ -115,6 +115,8 @@ module.exports.Operations = function(options) {
         );
       });
     },
+    $not: (property, operand, builder) => builder.whereNot(property, operand),
+    $notIn: (property, operand, builder) => builder.whereNotIn(property, operand)
   };
   const { operators } = options;
 
@@ -127,7 +129,7 @@ module.exports.Operations = function(options) {
    * @param {Object} expression
    * @param {QueryBuilder} builder
    */
-  const applyPropertyExpression = function(propertyName, expression, builder) {
+  const applyPropertyExpression = function (propertyName, expression, builder) {
     debug(
       `Handling property[${propertyName}] expression[${JSON.stringify(
         expression

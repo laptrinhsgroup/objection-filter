@@ -132,6 +132,12 @@ module.exports.Operations = function (options) {
           $and: items
         }, subQueryBuilder, false);
       });
+    },
+    $not: function $not(property, operand, builder) {
+      return builder.whereNot(property, operand);
+    },
+    $notIn: function $notIn(property, operand, builder) {
+      return builder.whereNotIn(property, operand);
     }
   };
   var operators = options.operators;
