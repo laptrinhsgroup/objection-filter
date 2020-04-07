@@ -67,7 +67,7 @@ module.exports = class FilterQueryBuilder {
     } = params;
 
     applyFields(fields, this._builder);
-    applyWhere({ $where: filter } || {}, this._builder, this.utils);
+    applyEager({ $where: filter } || {}, this._builder, this.utils);
     applyRequire(params.require, this._builder, this.utils);
     applyOrder(orderBy, this._builder, baseModel);
 

@@ -29,18 +29,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var _ = require('lodash');
 
 var _require = require('../config'),
-    debug = _require.debug;
+  debug = _require.debug;
 
 var _require2 = require('./utils'),
-    sliceRelation = _require2.sliceRelation,
-    Operations = _require2.Operations;
+  sliceRelation = _require2.sliceRelation,
+  Operations = _require2.Operations;
 
 var _require3 = require('./ExpressionBuilder'),
-    createRelationExpression = _require3.createRelationExpression;
+  createRelationExpression = _require3.createRelationExpression;
 
 var _require4 = require('./LogicalIterator'),
-    iterateLogicalExpression = _require4.iterateLogicalExpression,
-    getPropertiesFromExpression = _require4.getPropertiesFromExpression;
+  iterateLogicalExpression = _require4.iterateLogicalExpression,
+  getPropertiesFromExpression = _require4.getPropertiesFromExpression;
 
 var baseFields = ['id', 'createdAt', 'updatedAt'];
 
@@ -60,7 +60,7 @@ module.exports = function () {
 
     // Initialize custom operators
     var _options$operators = options.operators,
-        operators = _options$operators === undefined ? {} : _options$operators;
+      operators = _options$operators === undefined ? {} : _options$operators;
 
     // Initialize instance specific utilities
 
@@ -75,15 +75,15 @@ module.exports = function () {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       var baseModel = arguments[1];
       var fields = params.fields,
-          limit = params.limit,
-          offset = params.offset,
-          orderBy = params.orderBy,
-          includes = params.includes,
-          filter = params.filter;
+        limit = params.limit,
+        offset = params.offset,
+        orderBy = params.orderBy,
+        includes = params.includes,
+        filter = params.filter;
 
 
       applyFields(fields, this._builder);
-      applyWhere({ $where: filter } || {}, this._builder, this.utils);
+      applyEager({ $where: filter } || {}, this._builder, this.utils);
       applyRequire(params.require, this._builder, this.utils);
       applyOrder(orderBy, this._builder, baseModel);
 
@@ -291,8 +291,8 @@ var applyWhere = function applyWhere() {
 
   _.forEach(filter, function (andExpression, property) {
     var _sliceRelation = sliceRelation(property),
-        relationName = _sliceRelation.relationName,
-        propertyName = _sliceRelation.propertyName;
+      relationName = _sliceRelation.relationName,
+      propertyName = _sliceRelation.propertyName;
 
     if (!relationName) {
       // Root level where should include the root table name
@@ -332,8 +332,8 @@ var applyOrder = function applyOrder(order, builder, baseModel) {
     }
 
     var _sliceRelation2 = sliceRelation(orderProperty),
-        propertyName = _sliceRelation2.propertyName,
-        relationName = _sliceRelation2.relationName;
+      propertyName = _sliceRelation2.propertyName,
+      relationName = _sliceRelation2.relationName;
 
     if (!relationName) {
       // Root level where should include the root table name
@@ -388,8 +388,8 @@ var applyFields = function applyFields() {
   var rootFields = []; // Fields on the root model
   var fieldsByRelation = fields.reduce(function (obj, fieldName) {
     var _sliceRelation3 = sliceRelation(fieldName),
-        propertyName = _sliceRelation3.propertyName,
-        relationName = _sliceRelation3.relationName;
+      propertyName = _sliceRelation3.propertyName,
+      relationName = _sliceRelation3.relationName;
 
     if (!relationName) {
       rootFields.push(Model.tableName + '.' + propertyName);
