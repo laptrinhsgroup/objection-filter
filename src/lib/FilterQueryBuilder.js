@@ -67,7 +67,7 @@ module.exports = class FilterQueryBuilder {
     } = params;
 
     applyFields(fields, this._builder);
-    applyWhere(filter || {}, this._builder, this.utils, baseModel);
+    applyEager({ $where: filter } || {}, this._builder, this.utils);
     applyRequire(params.require, this._builder, this.utils);
     applyOrder(orderBy, this._builder, baseModel);
 
@@ -274,7 +274,7 @@ const applyWhere = function (filter = {}, builder, utils, baseModel) {
     builder.modifyEager(relationName, eagerBuilder => {
       const fullyQualifiedProperty = `${
         eagerBuilder.modelClass().tableName
-      }.${propertyName}`;
+        }.${propertyName}`;
       applyPropertyExpression(
         fullyQualifiedProperty,
         andExpression,

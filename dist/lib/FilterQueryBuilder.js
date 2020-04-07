@@ -83,7 +83,7 @@ module.exports = function () {
 
 
       applyFields(fields, this._builder);
-      applyWhere(filter || {}, this._builder, this.utils, baseModel);
+      applyEager({ $where: filter } || {}, this._builder, this.utils);
       applyRequire(params.require, this._builder, this.utils);
       applyOrder(orderBy, this._builder, baseModel);
 
