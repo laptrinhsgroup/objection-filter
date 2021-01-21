@@ -162,12 +162,12 @@ const applyEagerObject = function (expression, builder, utils) {
     [],
     utils
   );
-  builder.eager(expressionWithoutFilters);
+  builder.withGraphFetched(expressionWithoutFilters);
 };
 
 const applyEager = function (eager, builder, utils) {
   if (typeof eager === 'object') return applyEagerObject(eager, builder, utils);
-  if (typeof eager === 'string') builder.eager(`[${eager}]`);
+  if (typeof eager === 'string') builder.withGraphFetched(`[${eager}]`);
 };
 module.exports.applyEager = applyEager;
 

@@ -155,8 +155,17 @@ module.exports.Operations = function (options) {
   var applyPropertyExpression = function applyPropertyExpression(propertyName, expression, builder) {
     debug('Handling property[' + propertyName + '] expression[' + JSON.stringify(expression) + ']');
 
+    var fullyQualifiedProperty = propertyName;
+    if (propertyName.indexOf('.') < 0) {
+      var table = builder.modelClass().tableName;
+      fullyQualifiedProperty = table + '.' + propertyName;
+    }
+
     // If the rhs is a primitive, assume equality
-    if ((typeof expression === 'undefined' ? 'undefined' : _typeof(expression)) !== 'object') return allOperators.$equals(propertyName, expression, builder);
+    if ((typeof expression === 'undefined' ? 'undefined' : _typeof(expression)) !== 'object') {
+
+      return allOperators.$equals(fullyQualifiedProperty, expression, builder);
+    }
 
     for (var lhs in expression) {
       var operationHandler = allOperators[lhs];
@@ -167,7 +176,7 @@ module.exports.Operations = function (options) {
         continue;
       }
 
-      operationHandler(propertyName, rhs, builder);
+      operationHandler(fullyQualifiedProperty, rhs, builder);
     }
   };
 

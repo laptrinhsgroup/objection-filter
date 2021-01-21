@@ -136,9 +136,17 @@ module.exports.Operations = function (options) {
       )}]`
     );
 
+    let fullyQualifiedProperty = propertyName;
+    if (propertyName.indexOf('.') < 0) {
+      const table = builder.modelClass().tableName;
+      fullyQualifiedProperty = `${table}.${propertyName}`;
+    }
+
     // If the rhs is a primitive, assume equality
-    if (typeof expression !== 'object')
-      return allOperators.$equals(propertyName, expression, builder);
+    if (typeof expression !== 'object') {
+      
+      return allOperators.$equals(fullyQualifiedProperty, expression, builder);
+    }
 
     for (let lhs in expression) {
       const operationHandler = allOperators[lhs];
@@ -149,7 +157,7 @@ module.exports.Operations = function (options) {
         continue;
       }
 
-      operationHandler(propertyName, rhs, builder);
+      operationHandler(fullyQualifiedProperty, rhs, builder);
     }
   };
 
