@@ -57,6 +57,8 @@ module.exports.Operations = function (options) {
       operand ? builder.whereNotNull(property) : builder.whereNull(property),
     $containAll: (property, operand, builder) =>
       builder.whereRaw('?? @> ?', [property, operand]),
+    $overlap: (property, operand, builder) =>
+      builder.whereRaw('?? && ?', [property, operand]),
     /**
      * @param {String} property
      * @param {Array} items Must be an array of objects/values

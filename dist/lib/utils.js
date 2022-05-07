@@ -83,6 +83,9 @@ module.exports.Operations = function (options) {
     $containAll: function $containAll(property, operand, builder) {
       return builder.whereRaw('?? @> ?', [property, operand]);
     },
+    $overlap: function $overlap(property, operand, builder) {
+      return builder.whereRaw('?? && ?', [property, operand]);
+    },
     /**
      * @param {String} property
      * @param {Array} items Must be an array of objects/values
