@@ -116,7 +116,8 @@ module.exports.Operations = function (options) {
       });
     },
     $not: (property, operand, builder) => builder.whereNot(property, operand),
-    $notIn: (property, operand, builder) => builder.whereNotIn(property, operand)
+    $notIn: (property, operand, builder) => builder.whereNotIn(property, operand),
+    $any: (property, operand, builder) => builder.whereRaw('?? = ANY ?', [property, operand])
   };
   const { operators } = options;
 
